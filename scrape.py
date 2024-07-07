@@ -4,12 +4,19 @@ import os
 
 triwulan_list = ['I', 'II', 'III', 'IV']
 tahun_list = [2019, 2020, 2021, 2022]
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0'}
 
 if not os.path.exists('teks_laporan'):
     os.makedirs('teks_laporan')
 
 for tahun in tahun_list:
     for triwulan in triwulan_list:
+        filename = f'triwulan-{triwulan}-{tahun}.txt'
+        filepath = os.path.join('teks_laporan', 'laporan', filename)
+        print(f'checking triwulan {triwulan} tahun {tahun}')
+        if os.path.exists(filepath):
+            print(filename, 'exist')
+            continue
         # https://www.bi.go.id/id/publikasi/laporan/Pages/Laporan-Kebijakan-Moneter-Triwulan-II-2022.aspx
         link = f'https://www.bi.go.id/id/publikasi/laporan/Pages/Laporan-Kebijakan-Moneter-Triwulan-{triwulan}-{str(tahun)}.aspx'
         webpage = requests.get(link)
@@ -26,7 +33,7 @@ for tahun in tahun_list:
 
         # save to file
         filename = f'triwulan-{triwulan}-{str(tahun)}.txt'
-        with open(os.path.join('teks_laporan', filename), 'w', encoding='utf-8') as f:
+        with open(filepath, 'w', encoding='utf-8') as f:
             f.write(text)
             f.close()
 
